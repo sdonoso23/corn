@@ -116,7 +116,7 @@ ggsave("plots/botxplot.jpg",boxplot)
 ####DATA PARTITION AND CV PARAMETERS####
 
 timeslices<-createTimeSlices(1:nrow(training.filter),
-                             initialWindow = 1000,horizon =406, 
+                             initialWindow = 1000,horizon =366, 
                              fixedWindow = FALSE)
 
 
@@ -271,7 +271,7 @@ summary(results)
 
 svm1.pred<-predict(object = svm1,newdata = test.filter)
 
-caret::confusionMatrix(svm25.pred,test.filter$ClassNextDay,positive="Up")
+caret::confusionMatrix(svm1.pred,test.filter$ClassNextDay,positive="Up")
 
 
 
@@ -280,60 +280,60 @@ caret::confusionMatrix(svm25.pred,test.filter$ClassNextDay,positive="Up")
 
 for (i in 1:length(models)){
       df<-as.data.frame(models[[i]]$resample)
-      write_csv(df,paste("output/resamples",names(models[i]),".csv",sep=""))
+      write_csv(df,paste("output/resamples50",names(models[i]),".csv",sep=""))
       }
 
 for (i in 1:length(models)){
     df<-as.data.frame(models[[i]]$pred)
-    write_csv(df,paste("output/pred",names(models[i]),".csv",sep=""))
+    write_csv(df,paste("output/pred50",names(models[i]),".csv",sep=""))
 }
 
-read_csv("output/resamplesSVMLinear.csv") %>%
+read_csv("output/resamples50SVMLinear.csv") %>%
     group_by(C) %>%
     summarize(Acc=mean(Accuracy)) %>%
     arrange(desc(Acc))
 
-read_csv("output/resamplesSVMPoly.csv") %>%
+read_csv("output/resamples50SVMPoly.csv") %>%
     group_by(C,degree,scale) %>%
     summarize(Acc=mean(Accuracy)) %>%
     arrange(desc(Acc))
 
-read_csv("output/resamplesSVMRad.csv") %>%
+read_csv("output/resamples50SVMRad.csv") %>%
     group_by(C,sigma) %>%
     summarize(Acc=mean(Accuracy)) %>%
     arrange(desc(Acc))
 
-read_csv("output/resamplesSVMRadGrid.csv") %>%
+read_csv("output/resamples50SVMRadGrid.csv") %>%
     group_by(C,sigma) %>%
     summarize(Acc=mean(Accuracy)) %>%
     arrange(desc(Acc))
 
-read_csv("output/resamplesNN1Layer.csv") %>%
+read_csv("output/resamples50NN1Layer.csv") %>%
     group_by(layer1,layer2,layer3) %>%
     summarize(Acc=mean(Accuracy)) %>%
     arrange(desc(Acc))
 
-read_csv("output/resamplesNN2Layer.csv") %>%
+read_csv("output/resamples50NN2Layer.csv") %>%
     group_by(layer1,layer2,layer3) %>%
     summarize(Acc=mean(Accuracy)) %>%
     arrange(desc(Acc))
 
-read_csv("output/resamplesNN3Layer.csv") %>%
+read_csv("output/resamples50NN3Layer.csv") %>%
     group_by(layer1,layer2,layer3) %>%
     summarize(Acc=mean(Accuracy)) %>%
     arrange(desc(Acc))
 
-read_csv("output/resamplesNN1LayerDecay.csv") %>%
+read_csv("output/resamples50NN1LayerDecay.csv") %>%
     group_by(layer1,layer2,layer3,decay) %>%
     summarize(Acc=mean(Accuracy)) %>%
     arrange(desc(Acc))
 
-read_csv("output/resamplesNN2LayerDecay.csv") %>%
+read_csv("output/resamples50NN2LayerDecay.csv") %>%
     group_by(layer1,layer2,layer3,decay) %>%
     summarize(Acc=mean(Accuracy)) %>%
     arrange(desc(Acc))
 
-read_csv("output/resamplesNN3LayerDecay.csv") %>%
+read_csv("output/resamples50NN3LayerDecay.csv") %>%
     group_by(layer1,layer2,layer3,decay) %>%
     summarize(Acc=mean(Accuracy)) %>%
     arrange(desc(Acc))
